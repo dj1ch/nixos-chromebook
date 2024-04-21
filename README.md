@@ -198,12 +198,12 @@ CPU generations to determine AVS or SOF for your Chromebook
 
 | AVS             | SOF             |
 | --------------- | --------------- |
-| - Skylake       | - Alderlake     |
-| - Kabylake      |  - Jasperlake   |
-| - Apollolake    |  - Tigerlake    |
-|                 |  - Cometlake    |
-|                 |  - Geminilake   |
-|                 |  - Braswell     |
-|                 |  - Baytrail     |
+| Skylake         | Alderlake       |
+| Kabylake        | Jasperlake      |
+| Apollolake      | Tigerlake       |
+|                 | Cometlake       |
+|                 | Geminilake      |
+|                 | Braswell        |
+|                 | Baytrail        |
 
 If your CPU generation isn't listed, please make a pull request!

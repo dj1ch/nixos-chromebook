@@ -5,6 +5,9 @@ A method of setting up audio, keyd, etc on NixOS.
 > [!NOTE]
 > I am not affiliated with Chrultrabook. Please don't ask them for help regarding NixOS.
 
+> [!CAUTION]
+> The self-built package may break due to compatibility for NixOS, issues may occur and this isn't all perfect.
+
 ## Prerequisites
 
 - Working internet connection
@@ -188,6 +191,8 @@ in
 
 The rest of this process varies between AVS and SOF. Pay attention to the `# AUDIO SETUP FOR...` comment(for your NixOS version), this will be replaced later in configuration.
 
+##### Step 2A: Determine versions
+
 You can check your NixOS channel with:
 
 ```bash
@@ -207,3 +212,192 @@ CPU generations to determine AVS or SOF for your Chromebook
 |                 | Baytrail        |
 
 If your CPU generation isn't listed, please make a pull request!
+
+##### Step 2B: Configuration based on Step 2A
+
+**SOF Configuration:**
+
+> [!NOTE]
+> Depending on your NixOS verion, replace **one** of the comments in `chrome-device.nix`.
+
+Replace `# AUDIO SETUP FOR < 23.11 AND UNSTABLE` with this if this comment applies to your NixOS version!
+
+```nix
+# chrome-device.nix
+# for 23.11 and unstable
+etc = {
+  "wireplumber/main.lua.d/51-increase-headroom.lua".text = ''
+      rule = {
+        matches = {
+          {
+            { "node.name", "matches", "alsa_output.*" },
+          },
+        },
+        apply_properties = {
+          ["api.alsa.headroom"] = 4096,
+        },
+      }
+
+    table.insert(alsa_monitor.rules,rule)
+  '';
+};
+
+```
+
+Replace `# AUDIO SETUP FOR > 24.05` with this if this comment applies to your NixOS version!
+
+```nix
+# chrome-device.nix
+in 
+{
+  # additonal configuration...
+
+  # for 24.05
+  services.pipewire.wireplumber.configPackages = [
+    (pkgs.writeTextDir "share/wireplumber/main.lua.d/51-increase-headroom.lua" ''
+      rule = {
+        matches = {
+          {
+            { "node.name", "matches", "alsa_output.*" },
+          },
+        },
+        apply_properties = {
+          ["api.alsa.headroom"] = 4096,
+        },
+      }
+
+      table.insert(alsa_monitor.rules,rule)
+    '')
+  ];
+
+  # additonal configuration...
+}
+
+```
+
+**AVS Configuration**
+
+> [!NOTE]
+> Depending on your NixOS verion, replace **one** of the comments in `chrome-device.nix`.
+
+Replace `# AUDIO SETUP FOR < 23.11 AND UNSTABLE` with this if this comment applies to your NixOS version!
+
+```nix
+# chrome-device.nix
+# for 23.11 and unstable
+etc = {
+  "wireplumber/main.lua.d/51-avs-dmic.lua".text = ''
+    rule = {
+      matches = {
+        {
+          { "node.nick", "equals", "Internal Microphone" },
+        },
+      },
+      apply_properties = {
+        ["audio.format"] = "S16LE",
+      },
+    }
+
+    table.insert(alsa_monitor.rules, rule)
+  '';
+};
+
+```
+
+Replace `# AUDIO SETUP FOR > 24.05` with this if this comment applies to your NixOS version!
+
+```nix
+# chrome-device.nix
+in 
+{
+  # additonal configuration...
+
+  # for 24.05
+  services.pipewire.wireplumber.configPackages = [
+    (pkgs.writeTextDir "share/wireplumber/main.lua.d/51-avs-dmic.lua" ''
+      rule = {
+        matches = {
+          {
+            { "node.nick", "equals", "Internal Microphone" },
+          },
+        },
+        apply_properties = {
+          ["audio.format"] = "S16LE",
+        },
+      }
+
+      table.insert(alsa_monitor.rules, rule)
+    '')
+  ];
+
+  # additonal configuration...
+}
+
+```
+
+##### Step 2C: Modprobes
+
+> [!NOTE]
+> This directly relies on what CPU generation you have
+
+**SOF** modprobe config for **Alderlake, Jasperlake, Tigerlake, Cometlake, and Geminilake**
+
+```nix
+# chrome-device.nix
+in
+{
+  boot = {
+    extraModprobeConfig = ''
+      options snd-intel-dspcfg dsp_driver=3
+    '';
+  };
+
+  # additonal configuration...
+}
+
+```
+
+**SOF** modprobe config for **Braswell and Baytrail**
+
+```nix
+# chrome-device.nix
+in
+{
+  boot = {
+    extraModprobeConfig = ''
+      options snd-intel-dspcfg dsp_driver=3
+      options snd-sof sof_debug=1
+    '';
+  };
+
+  # additonal configuration...
+}
+
+```
+
+**AVS** modprobe config for **Skylake, Kabylake, and Apollolake**
+
+```nix
+# chrome-device.nix
+in
+{
+  boot = {
+    extraModprobeConfig = ''
+      options snd-intel-dspcfg dsp_driver=4
+    '';
+  };
+
+  # additonal configuration...
+}
+
+```
+
+#### Step 3: Post-Install
+
+From here, you'll need to rebuild your configuration
+
+```nix
+sudo nixos-rebuild switch
+```
+
+Changes should apply, you can reboot if necessary.

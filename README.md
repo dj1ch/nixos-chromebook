@@ -275,7 +275,7 @@ in
 
 ```
 
-**AVS Configuration**
+**AVS Configuration:**
 
 > [!NOTE]
 > Depending on your NixOS verion, replace **one** of the comments in `chrome-device.nix`.

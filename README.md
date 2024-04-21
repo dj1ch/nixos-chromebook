@@ -15,9 +15,7 @@ A method of setting up audio, keyd, etc on NixOS.
 - An understanding of Linux command line
 - Patience
 
-### Installation/Configuration
-
-#### Step 1: Create Configuration file(s)
+### Step 1: Create Configuration file(s)
 
 > [!TIP]
 > Note that the configurations are applied to `configuration.nix` located in `/etc/nixos`.
@@ -54,7 +52,7 @@ Then at the top of our `configuration.nix` we import `chrome-device.nix`.
 
 ```
 
-#### Step 2: ALSA UCM configuration
+### Step 2: ALSA UCM configuration
 
 Build the package in `chrome-device.nix` and setup Keyd
 
@@ -191,7 +189,7 @@ in
 
 The rest of this process varies between AVS and SOF. Pay attention to the `# AUDIO SETUP FOR...` comment(for your NixOS version), this will be replaced later in configuration.
 
-##### Step 2A: Determine versions
+#### Step 2A: Determine versions
 
 You can check your NixOS channel with:
 
@@ -213,7 +211,7 @@ CPU generations to determine AVS or SOF for your Chromebook
 
 If your CPU generation isn't listed, please make a pull request!
 
-##### Step 2B: Configuration based on Step 2A
+#### Step 2B: Configuration based on Step 2A
 
 **SOF Configuration:**
 
@@ -335,7 +333,7 @@ in
 
 ```
 
-##### Step 2C: Modprobes
+#### Step 2C: Modprobes
 
 > [!NOTE]
 > This directly relies on what CPU generation you have
@@ -392,7 +390,7 @@ in
 
 ```
 
-### Post-Install
+### Step 3: Post-Install
 
 From here, you'll need to rebuild your configuration
 

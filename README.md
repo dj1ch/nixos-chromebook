@@ -18,6 +18,7 @@ A method of setting up audio, keyd, etc on NixOS.
 
 > [!TIP]
 > Note that the configurations are applied to `configuration.nix` located in `/etc/nixos`.
+
 > [!TIP]
 > Running the command `sudo nixos-rebuild switch` will rebuild your installation and apply the changes made.
 

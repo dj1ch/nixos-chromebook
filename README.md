@@ -392,7 +392,7 @@ in
 
 ```
 
-#### Step 3: Post-Install
+### Post-Install
 
 From here, you'll need to rebuild your configuration
 

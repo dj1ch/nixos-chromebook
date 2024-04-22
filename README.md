@@ -2,10 +2,8 @@
 
 A method of setting up audio, keyd, etc on NixOS.
 
-> [!NOTE]
 > I am not affiliated with Chrultrabook. Please don't ask them for help regarding NixOS.
 
-> [!CAUTION]
 > The self-built package may break due to compatibility for NixOS, issues may occur and this isn't all perfect.
 
 ## Prerequisites
@@ -17,10 +15,8 @@ A method of setting up audio, keyd, etc on NixOS.
 
 ### Step 1: Create Configuration file(s)
 
-> [!TIP]
 > Note that the configurations are applied to `configuration.nix` located in `/etc/nixos`.
 
-> [!TIP]
 > Running the command `sudo nixos-rebuild switch` will rebuild your installation and apply the changes made.
 
 First things first, for Chromebook-related configuration, we will create `chrome-device.nix`.
@@ -215,7 +211,6 @@ If your CPU generation isn't listed, please make a pull request!
 
 **SOF Configuration:**
 
-> [!NOTE]
 > Depending on your NixOS verion, replace **one** of the comments in `chrome-device.nix`.
 
 Replace `# AUDIO SETUP FOR < 23.11 AND UNSTABLE` with this if this comment applies to your NixOS version!
@@ -275,7 +270,6 @@ in
 
 **AVS Configuration:**
 
-> [!NOTE]
 > Depending on your NixOS verion, replace **one** of the comments in `chrome-device.nix`.
 
 Replace `# AUDIO SETUP FOR < 23.11 AND UNSTABLE` with this if this comment applies to your NixOS version!
@@ -335,7 +329,6 @@ in
 
 #### Step 2C: Modprobes
 
-> [!NOTE]
 > This directly relies on what CPU generation you have
 
 **SOF** modprobe config for **Alderlake, Jasperlake, Tigerlake, Cometlake, and Geminilake**

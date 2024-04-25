@@ -392,3 +392,5 @@ sudo nixos-rebuild switch
 ```
 
 Changes should apply, you can reboot if necessary.
+
+**Feel free to see my [configuration](/my-configuration/) to see how I did all this!**

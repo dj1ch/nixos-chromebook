@@ -9,7 +9,7 @@ A method of setting up audio, keyd, etc on NixOS.
 ## Prerequisites
 
 - Working internet connection
-- A [supported](https://docs.chrultrabook.com/docs/firmware/supported-devices.html) Chromebook
+  - A [supported](https://docs.chrultrabook.com/docs/devices.html) Chromebook
 - An understanding of Linux command line
 - Patience
 
